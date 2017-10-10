@@ -12,8 +12,18 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FirebaseProvider {
 
-  constructor(public http: Http) {
-    console.log('Hello FirebaseProvider Provider');
-  }
+  constructor(public afd: AngularFireDatabase) {}
 
+  //user information while registration
+  addNewUserProfile(newId, newFirstName, newLastName) {
+    var user = this.afd.app.auth().currentUser;
+    var usersRef = this.afd.app.database().ref("users");
+    if (user) {
+      usersRef.child(user.uid).set({ 
+        firstName: newFirstName,
+        lastName: newLastName,
+        joinDate: new Date().toDateString()
+      });
+    }
+  }
 }
