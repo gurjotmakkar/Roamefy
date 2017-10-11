@@ -8,6 +8,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 import { EmailValidator } from '../../validators/email';
+import { PasswordValidator } from '../../validators/password';
 import { HomePage } from '../home/home';
 
 @IonicPage()
@@ -26,7 +27,7 @@ export class LoginPage {
 
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
-        password: ['', Validators.compose([Validators.minLength(8), Validators.required])]
+        password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
       });
   }
 

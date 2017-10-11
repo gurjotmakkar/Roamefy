@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { AuthProvider } from '../../providers/auth/auth';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
-
+import { LocationTracker } from '../../providers/location-tracker/location-tracker'; 
 import { LoginPage } from '../login/login'
 
 @Component({
@@ -12,11 +12,19 @@ import { LoginPage } from '../login/login'
 })
 export class HomePage {
 
-  constructor(public authData: AuthProvider, public navCtrl: NavController, public firebaseProvider: FirebaseProvider) {}
+  constructor(public authData: AuthProvider, public navCtrl: NavController, public firebaseProvider: FirebaseProvider, public locationTracker: LocationTracker) {}
   
   logout() {
     this.authData.logoutUser();
     this.navCtrl.setRoot(LoginPage);
+  }
+
+  start(){
+    this.locationTracker.startTracking();
+  }
+ 
+  stop(){
+    this.locationTracker.stopTracking();
   }
 
 }

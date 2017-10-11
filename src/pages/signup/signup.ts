@@ -28,7 +28,7 @@ export class SignupPage {
       firstName: ['', Validators.compose([Validators.required])],
       lastName: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
-      password: ['', Validators.compose([Validators.required, PasswordValidator.isValid, Validators.minLength(8)])]
+      password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
     });
   }
 

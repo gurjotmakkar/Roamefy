@@ -44,10 +44,8 @@
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
         <p>Your password needs more than 8 characters</p>
-        <!--
-          <p>with atleast one lowercase, uppercase</p>
-          <p>and a number</p>
-        -->
+        <p>with atleast one lowercase, uppercase</p>
+        <p>and a number</p>
       </ion-item>
 
     </ion-list>
