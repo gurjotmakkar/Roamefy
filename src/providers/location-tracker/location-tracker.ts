@@ -1,8 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Http } from '@angular/http';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 @Injectable()
 export class LocationTracker {

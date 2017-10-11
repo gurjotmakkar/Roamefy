@@ -22,7 +22,7 @@ import { LocationTracker } from '../providers/location-tracker/location-tracker'
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation';
 
-//Firebase datase configuration data
+//Firebase database configuration data
 //DO NOT CHANGE ANYTHING
 const firebaseConfig = {
   apiKey: "AIzaSyAfAtP5YK9MsFgB7erifiiLX3XT4JouuY0",
