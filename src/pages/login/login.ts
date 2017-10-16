@@ -4,7 +4,7 @@ import {
   NavController,
   LoadingController,
   Loading,
-  AlertController } from 'ionic-angular';
+  AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 import { EmailValidator } from '../../validators/email';
@@ -23,8 +23,8 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public authData: AuthProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController) {
-
+    public loadingCtrl: LoadingController, private menu: MenuController) {
+      this.menu.swipeEnable(false);
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
