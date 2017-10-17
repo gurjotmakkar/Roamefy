@@ -27,6 +27,7 @@
     "@ionic-native/status-bar": "4.3.0",
     "@ionic/storage": "2.0.1",
     "angularfire2": "^4.0.0-rc0",
+    "cordova-android": "~6.3.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.15",
     "cordova-plugin-mauron85-background-geolocation": "^2.2.5",
