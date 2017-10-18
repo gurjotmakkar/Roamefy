@@ -37,7 +37,23 @@ export class LoginPage {
     } else {
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password)
       .then( authData => {
-        this.navCtrl.setRoot(HomePage);
+        if (this.authData.afAuth.auth.currentUser.emailVerified == false){
+          this.authData.logoutUser();
+          this.loading.dismiss().then( () => {
+            let alert = this.alertCtrl.create({
+              message: "Please verify your email",
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        } else {
+          this.navCtrl.setRoot(HomePage);
+        }
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({

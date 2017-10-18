@@ -21,7 +21,8 @@ export class FirebaseProvider {
       usersRef.child(user.uid).set({ 
         firstName: newFirstName,
         lastName: newLastName,
-        joinDate: new Date().toDateString()
+        joinDate: new Date().toDateString(),
+        Configured: false
       });
     }
   }

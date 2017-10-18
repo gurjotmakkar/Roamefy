@@ -4,7 +4,8 @@ import {
   NavController,
   LoadingController,
   Loading,
-  AlertController } from 'ionic-angular';
+  AlertController,
+  MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
@@ -23,7 +24,8 @@ export class SignupPage {
   public submitAttempt;
 
   constructor(public nav: NavController, public authData: AuthProvider, public formBuilder: FormBuilder, 
-    public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+    public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
+    this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
       lastName: ['', Validators.compose([Validators.required])],
@@ -40,7 +42,7 @@ export class SignupPage {
       this.authData.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstName, 
         this.signupForm.value.lastName)
       .then(() => {
-        this.nav.setRoot(HomePage);
+        this.nav.setRoot(LoginPage);
       }, (error) => {
         this.loading.dismiss().then( () => {
           var errorMessage: string = error.message;

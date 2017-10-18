@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import 'rxjs/add/operator/map';
+import { AlertController } from 'ionic-angular';
 
 /*
   Generated class for the AuthProvider provider.
@@ -12,7 +13,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthProvider {
 
-  constructor(public afAuth: AngularFireAuth, public firebaseProvider: FirebaseProvider) {}
+  constructor(public afAuth: AngularFireAuth, public firebaseProvider: FirebaseProvider, public alertCtrl: AlertController) {}
+
   loginUser(newEmail: string, newPassword: string): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword);
    }
@@ -28,10 +30,12 @@ export class AuthProvider {
    signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
     .then(() => {
-      if(this.afAuth.auth.currentUser)
+        this.afAuth.auth.currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('verification email sent');
+        });
         this.firebaseProvider.addNewUserProfile(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
-      else
-          return this.afAuth.authState;
+        //this.logoutUser();
     });
   }
 }
