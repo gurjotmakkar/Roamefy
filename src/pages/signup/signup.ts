@@ -8,7 +8,6 @@ import {
   MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
-import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
