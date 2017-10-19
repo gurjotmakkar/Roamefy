@@ -17,10 +17,8 @@ import { LoginPage } from '../pages/login/login';
 
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
   rootPage: any;
   activePage: any;
-
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen, 
@@ -67,8 +65,8 @@ export class MyApp {
     this.nav.setRoot(LoginPage);
   }
 
-checkActive(page){
-  return page = this.activePage;
-}
+  checkActive(page){
+    return page = this.activePage;
+  }
 
 }
