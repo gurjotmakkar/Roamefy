@@ -10,6 +10,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
+import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +27,7 @@ export class MyApp {
     public firebaseProvider: FirebaseProvider, public authData: AuthProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = HomePage;
+        this.rootPage = InitialConfigurationTwoPage; //HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
@@ -36,7 +38,9 @@ export class MyApp {
     this.initializeApp();
 
     this.pages = [
-      { title: "Home", component: HomePage }
+      { title: "Home", component: HomePage },
+      { title: "Interests", component: InitialConfigurationPage },
+      { title: "Time and Distance", component: InitialConfigurationTwoPage }
     ];
 
     this.activePage = this.pages[0];

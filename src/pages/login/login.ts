@@ -10,6 +10,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
 import { HomePage } from '../home/home';
+import { InitialConfigurationPage } from '../initial-configuration/initial-configuration';
 
 @IonicPage()
 @Component({
@@ -52,7 +53,18 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          this.navCtrl.setRoot(HomePage);
+          var db = this.authData.afAuth.app.database().ref('users').child(this.authData.afAuth.auth.currentUser.uid).child('Configured');
+          var configured;
+          db.on('value', function(snapshot) {
+             configured = snapshot.val();
+             console.log(configured);
+          });
+          if(configured == false) {
+            this.navCtrl.setRoot(InitialConfigurationPage);
+          }
+          else{
+            this.navCtrl.setRoot(HomePage);
+          }
         }
       }, error => {
         this.loading.dismiss().then( () => {

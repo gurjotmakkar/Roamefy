@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the FirebaseProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class FirebaseProvider {
 
@@ -21,9 +15,66 @@ export class FirebaseProvider {
       usersRef.child(user.uid).set({ 
         firstName: newFirstName,
         lastName: newLastName,
-        joinDate: new Date().toDateString(),
+        joinDate: new Date().getDate(),
         Configured: false
       });
     }
   }
+
+  getUserID(){
+    return this.afd.app.auth().currentUser.uid;
+  }
+
+  getInterestList() {
+    return this.afd.list('/Interests');
+  }
+
+  addInterest(itemKey) {
+    var id = this.getUserID();
+    const members = this.afd.app.database().ref(`Interests/${itemKey}/members`)
+    members.child(id).set(true);
+  }
+
+  removeInterest(itemKey) {
+    var id = this.getUserID();
+    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${id}`)
+    member.remove()
+  }
+  
+  getDistance(){
+    var id = this.getUserID();
+    var distance = 0;
+    const db = this.afd.app.database().ref(`users/${id}/distance/`);
+    db.on('value', function(snapshot) {
+      if(snapshot.val()){
+        distance = snapshot.val();
+      }
+    });
+    return distance;
+  }
+  
+  getTime(){
+    var id = this.getUserID();
+    var time = 0;
+    const db = this.afd.app.database().ref(`users/${id}/time/`);
+    db.on('value', function(snapshot) {
+      if(snapshot.val()){
+        time = snapshot.val();
+      }
+    });
+    return time;  
+  }
+
+  updateDistance(value){
+    var id = this.getUserID();
+    const distance = this.afd.app.database().ref(`users/${id}/distance/`);
+    distance.set(value);
+  }
+
+  updateTime(value){
+    var id = this.getUserID();
+    const time = this.afd.app.database().ref(`users/${id}/time/`);
+    time.set(value);    
+  }
+
 }
