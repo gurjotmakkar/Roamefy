@@ -27,7 +27,7 @@ export class MyApp {
     public firebaseProvider: FirebaseProvider, public authData: AuthProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = InitialConfigurationTwoPage; //HomePage;
+        this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
@@ -64,9 +64,9 @@ export class MyApp {
   }
 
   logout() {
-    this.authData.logoutUser();
     this.rootPage = LoginPage;
     this.nav.setRoot(LoginPage);
+    this.authData.logoutUser();
   }
 
   checkActive(page){

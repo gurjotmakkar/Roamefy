@@ -7,6 +7,7 @@ import {
   AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
 import { HomePage } from '../home/home';
@@ -24,7 +25,8 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public authData: AuthProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, private menu: MenuController) {
+    public loadingCtrl: LoadingController, private menu: MenuController, 
+    private firebase: FirebaseProvider) {
       this.menu.swipeEnable(false);
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
@@ -53,18 +55,20 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          var db = this.authData.afAuth.app.database().ref('users').child(this.authData.afAuth.auth.currentUser.uid).child('Configured');
           var configured;
-          db.on('value', function(snapshot) {
-             configured = snapshot.val();
-             console.log(configured);
+          var db = this.authData.firebaseProvider.getObject()
+          .subscribe(x => {
+            configured = x.Configured;
+            if(configured == false) {
+              this.navCtrl.setRoot(InitialConfigurationPage);
+              db.unsubscribe();
+            }
+            else{
+              this.navCtrl.setRoot(HomePage);
+              db.unsubscribe();
+            }
           });
-          if(configured == false) {
-            this.navCtrl.setRoot(InitialConfigurationPage);
-          }
-          else{
-            this.navCtrl.setRoot(HomePage);
-          }
+
         }
       }, error => {
         this.loading.dismiss().then( () => {

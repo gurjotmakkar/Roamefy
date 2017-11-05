@@ -24,7 +24,9 @@ export class AuthProvider {
    }
 
    logoutUser(): Promise<any> {
-    return this.afAuth.auth.signOut();
+    return this.afAuth.auth.signOut()
+    .then(() => console.log("user logged out"))
+    .catch(e => console.log("exception: " + e));
    }
 
    signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string): Promise<any> {

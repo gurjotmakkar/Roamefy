@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { InitialConfigurationTwoPage } from '../initial-configuration-two/initial-configuration-two';
@@ -12,7 +12,8 @@ import { InitialConfigurationTwoPage } from '../initial-configuration-two/initia
 export class InitialConfigurationPage {
   interest: FirebaseListObservable<any[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
+      public alertCtrl: AlertController) {
     this.interest = this.firebase.getInterestList();
   }
 
@@ -49,7 +50,33 @@ export class InitialConfigurationPage {
   }
 
   nextSetupPage(){
-    this.navCtrl.setRoot(InitialConfigurationTwoPage);
+    var count = 0;
+    this.interest.forEach(item => {
+      item.forEach( i => {
+        if(this.checkornot(i.members))
+          count++;
+      })
+    })
+    
+    if(count >= 3){
+      this.navCtrl.setRoot(InitialConfigurationTwoPage);
+    }else {
+      let alert = this.alertCtrl.create({
+      message: "Please select at least 3 interests",
+      buttons: [
+        {
+          text: "Ok",
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+    }
   }
+
+  
+ngOnDestroy() {
+  this.interest.subscribe().unsubscribe();
+}
 
 }

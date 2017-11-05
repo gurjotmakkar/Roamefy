@@ -41,28 +41,9 @@ export class FirebaseProvider {
     member.remove()
   }
   
-  getDistance(){
+  getObject(){
     var id = this.getUserID();
-    var distance = 0;
-    const db = this.afd.app.database().ref(`users/${id}/distance/`);
-    db.on('value', function(snapshot) {
-      if(snapshot.val()){
-        distance = snapshot.val();
-      }
-    });
-    return distance;
-  }
-  
-  getTime(){
-    var id = this.getUserID();
-    var time = 0;
-    const db = this.afd.app.database().ref(`users/${id}/time/`);
-    db.on('value', function(snapshot) {
-      if(snapshot.val()){
-        time = snapshot.val();
-      }
-    });
-    return time;  
+    return this.afd.object(`users/${id}/`);
   }
 
   updateDistance(value){
