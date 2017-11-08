@@ -6,6 +6,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
+import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 
 //UI
 import { StatusBar } from '@ionic-native/status-bar';
@@ -36,7 +38,9 @@ const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    InitialConfigurationPage,
+    InitialConfigurationTwoPage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,9 @@ const firebaseConfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    InitialConfigurationPage,
+    InitialConfigurationTwoPage
   ],
   providers: [
     StatusBar,
