@@ -19,7 +19,6 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 //import { AngularFireDatabase } from 'angularfire2/database';
 import { FirebaseProvider } from './../providers/firebase/firebase';
-import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -65,7 +64,6 @@ const firebaseConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FirebaseProvider,
-    AuthProvider,
     BackgroundGeolocation,
     Geolocation
   ]

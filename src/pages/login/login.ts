@@ -6,7 +6,6 @@ import {
   Loading,
   AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthProvider } from '../../providers/auth/auth';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
@@ -23,10 +22,9 @@ export class LoginPage {
   public loginForm:FormGroup;
   public loading:Loading;
 
-  constructor(public navCtrl: NavController, public authData: AuthProvider,
+  constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, private menu: MenuController, 
-    private firebase: FirebaseProvider) {
+    public loadingCtrl: LoadingController, private menu: MenuController) {
       this.menu.swipeEnable(false);
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
@@ -56,7 +54,7 @@ export class LoginPage {
           });
         } else {
           var configured;
-          var db = this.authData.firebaseProvider.getObject()
+          var db = this.authData.getObject()
           .subscribe(x => {
             configured = x.Configured;
             if(configured == false) {
