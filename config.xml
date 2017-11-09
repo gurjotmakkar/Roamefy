@@ -92,4 +92,5 @@
         <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
+    <engine name="browser" spec="~5.0.1" />
 </widget>

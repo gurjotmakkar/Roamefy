@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2/database';
+//import { AngularFireDatabase } from 'angularfire2/database';
+//import { AngularFireDatabase } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { InitialConfigurationTwoPage } from '../initial-configuration-two/initial-configuration-two';
 
@@ -14,7 +16,7 @@ export class InitialConfigurationPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
-    this.interest = this.firebase.getInterestList();
+        this.interest = this.firebase.getInterestList();
   }
 
   checkornot(members){
