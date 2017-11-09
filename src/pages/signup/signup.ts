@@ -7,7 +7,7 @@ import {
   AlertController,
   MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthProvider } from '../../providers/auth/auth';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
@@ -22,7 +22,7 @@ export class SignupPage {
   public loading:Loading;
   public submitAttempt;
 
-  constructor(public nav: NavController, public authData: AuthProvider, public formBuilder: FormBuilder, 
+  constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
     this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({

@@ -3,7 +3,6 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { AuthProvider } from '../providers/auth/auth';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -24,7 +23,7 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen, 
-    public firebaseProvider: FirebaseProvider, public authData: AuthProvider) {
+    public firebaseProvider: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
         this.rootPage = HomePage;
@@ -66,7 +65,7 @@ export class MyApp {
   logout() {
     this.rootPage = LoginPage;
     this.nav.setRoot(LoginPage);
-    this.authData.logoutUser();
+    this.firebaseProvider.logoutUser();
   }
 
   checkActive(page){

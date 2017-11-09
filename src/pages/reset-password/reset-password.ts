@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthProvider } from '../../providers/auth/auth';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 
 @IonicPage()
@@ -12,7 +12,7 @@ import { EmailValidator } from '../../validators/email';
 export class ResetPasswordPage {
   public resetPasswordForm:FormGroup;
 
-  constructor(public authData: AuthProvider, public formBuilder: FormBuilder,
+  constructor(public authData: FirebaseProvider, public formBuilder: FormBuilder,
   public nav: NavController, public alertCtrl: AlertController, public menu: MenuController) {
   this.menu.swipeEnable(false);
   this.resetPasswordForm = formBuilder.group({

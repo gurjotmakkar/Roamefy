@@ -15,6 +15,7 @@ export class InitialConfigurationPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
     this.interest = this.firebase.getInterestList();
+    this.interest.subscribe(x => console.log(x));
   }
 
   checkornot(members){
@@ -49,7 +50,7 @@ export class InitialConfigurationPage {
     }
   }
 
-  nextSetupPage(){
+  interestCount(){
     var count = 0;
     this.interest.forEach(item => {
       item.forEach( i => {
@@ -57,8 +58,11 @@ export class InitialConfigurationPage {
           count++;
       })
     })
-    
-    if(count >= 3){
+    return count;
+  }
+
+  nextSetupPage(){
+    if(this.interestCount() >= 3){
       this.navCtrl.setRoot(InitialConfigurationTwoPage);
     }else {
       let alert = this.alertCtrl.create({
@@ -74,6 +78,24 @@ export class InitialConfigurationPage {
     }
   }
 
+  /*
+  ionViewWillLeave(){
+    if(this.interestCount() >= 3){
+      this.navCtrl.pop();
+    } else {
+      let alert = this.alertCtrl.create({
+        message: "Please select at least 3 interests",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    }
+  }
+  */
   
 ngOnDestroy() {
   this.interest.subscribe().unsubscribe();
