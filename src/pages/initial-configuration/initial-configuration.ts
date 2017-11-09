@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { InitialConfigurationTwoPage } from '../initial-configuration-two/initial-configuration-two';
+import { Subscription } from 'rxjs/Subscription'
 
 @IonicPage()
 @Component({
@@ -10,17 +11,30 @@ import { InitialConfigurationTwoPage } from '../initial-configuration-two/initia
   templateUrl: 'initial-configuration.html',
 })
 export class InitialConfigurationPage {
-  interest: FirebaseListObservable<any[]>;
+  obj: FirebaseListObservable<any[]>;
+  interest: any[] = [];
+  subscription: Subscription;
+  userID: string;
+  obj2: FirebaseObjectObservable<any>;
+  subscription2: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
-    this.interest = this.firebase.getInterestList();
-    this.interest.subscribe(x => console.log(x));
+    this.obj = this.firebase.getInterestList();
+    this.subscription = this.obj.subscribe(x => {
+      x.forEach(i => {
+        this.interest.push(i);
+      });
+    });
+    this.obj2 = this.firebase.getObject();
+    this.subscription2 = this.obj2.subscribe(x => {
+      this.userID = x.$key;
+    });
   }
 
   checkornot(members){
     for (var member in members) {
-      if(member == this.firebase.getUserID()){
+      if(member == this.userID){
         return true;
       }else{
         return false;
@@ -29,25 +43,17 @@ export class InitialConfigurationPage {
   }
 
   toggleCheck(members, key){
-    if(this.checkornot(members))
-      this.firebase.removeInterest(key);
-    else
-      this.firebase.addInterest(key);
+    if(this.checkornot(members)){
+      this.interest = [];
+      this.firebase.removeInterest(this.userID, key);
+    } else {
+      this.interest = [];
+      this.firebase.addInterest(this.userID, key);
+    }
   }
 
   isConfigured(){
-    var id = this.firebase.getUserID();
-    var db = this.firebase.afd.app.database().ref('users').child(id).child('Configured');
-    var configured;
-    db.on('value', function(snapshot) {
-       configured = snapshot.val();
-    });
-    if(configured == false) {
-      return true;
-    }
-    else{
-      return false;
-    }
+    return this.firebase.isUserConfigured(this.userID);
   }
 
   interestCount(){
@@ -98,7 +104,9 @@ export class InitialConfigurationPage {
   */
   
 ngOnDestroy() {
-  this.interest.subscribe().unsubscribe();
+  this.subscription.unsubscribe()
+  this.userID = null;
+  this.subscription2.unsubscribe();
 }
 
 }

@@ -41,6 +41,16 @@ export class SignupPage {
       this.authData.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstName, 
         this.signupForm.value.lastName)
       .then(() => {
+        let alert = this.alertCtrl.create({
+          message: "An email has been sent to you to verify your email address",
+          buttons: [
+            {
+              text: "Ok",
+              role: 'cancel'
+            }
+          ]
+        });
+        alert.present();
         this.nav.setRoot(LoginPage);
       }, (error) => {
         this.loading.dismiss().then( () => {

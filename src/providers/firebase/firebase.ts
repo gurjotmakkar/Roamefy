@@ -5,11 +5,23 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FirebaseProvider {
+  userID: string;
 
-  constructor(public afAuth: AngularFireAuth, public afd: AngularFireDatabase) {}
+  constructor(public afAuth: AngularFireAuth, public afd: AngularFireDatabase) {
+    const authObserver = afAuth.authState.subscribe( user => {
+      if (user) {
+        this.userID = user.uid;
+        authObserver.unsubscribe();
+      } else {
+        this.userID = null;
+        authObserver.unsubscribe();
+      }
+    });
+  }
   
   loginUser(newEmail: string, newPassword: string): Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword);
+    return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
+      .then(() => this.userID = this.afAuth.auth.currentUser.uid);
    }
 
    resetPassword(email: string): Promise<any> {
@@ -33,6 +45,7 @@ export class FirebaseProvider {
         //this.logoutUser();
     });
   }
+
   //user information while registration
   addNewUserProfile(newId, newFirstName, newLastName) {
     var user = this.afd.app.auth().currentUser;
@@ -47,40 +60,49 @@ export class FirebaseProvider {
     }
   }
 
-  getUserID(){
-    return this.afd.app.auth().currentUser.uid;
+  getObject(){
+    return this.afd.object(`users/${this.userID}/`);
+  }
+
+  configureUser(id){
+    this.afd.app.database().ref('users').child(this.userID).child('Configured').set(true);
+  }
+
+  isUserConfigured(id){
+    var db = this.afd.app.database().ref('users').child(this.userID).child('Configured');
+    var configured;
+    db.on('value', function(snapshot) {
+       configured = snapshot.val();
+    });
+    if(configured == false) {
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   getInterestList() {
     return this.afd.list('/Interests');
   }
 
-  addInterest(itemKey) {
-    var id = this.getUserID();
+  addInterest(id, itemKey) {
     const members = this.afd.app.database().ref(`Interests/${itemKey}/members`)
-    members.child(id).set(true);
+    members.child(this.userID).set(true);
   }
 
-  removeInterest(itemKey) {
-    var id = this.getUserID();
-    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${id}`)
+  removeInterest(id, itemKey) {
+    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
     member.remove()
   }
-  
-  getObject(){
-    var id = this.getUserID();
-    return this.afd.object(`users/${id}/`);
-  }
 
-  updateDistance(value){
-    var id = this.getUserID();
-    const distance = this.afd.app.database().ref(`users/${id}/distance/`);
+  updateDistance(id, value){
+    const distance = this.afd.app.database().ref(`users/${this.userID}/distance/`);
     distance.set(value);
   }
 
-  updateTime(value){
-    var id = this.getUserID();
-    const time = this.afd.app.database().ref(`users/${id}/time/`);
+  updateTime(id, value){
+    const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
     time.set(value);    
   }
 

@@ -20,15 +20,18 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
   activePage: any;
+  userID: string;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen, 
     public firebaseProvider: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
+        this.userID = user.uid;
         this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
+        this.userID = null;
         this.rootPage = LoginPage;
         authObserver.unsubscribe();
       }
