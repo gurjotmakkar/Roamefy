@@ -21,8 +21,6 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseProvider } from './../providers/firebase/firebase';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
-import { Geolocation } from '@ionic-native/geolocation';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -67,9 +65,7 @@ const firebaseConfig = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FirebaseProvider,
-    BackgroundGeolocation,
-    Geolocation
+    FirebaseProvider
   ]
 })
 export class AppModule {}
