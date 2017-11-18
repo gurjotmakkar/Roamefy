@@ -8,6 +8,8 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
+import { UserProfilePage } from '../pages/user-profile/user-profile'
+import { EditUserProfilePage } from '../pages/edit-user-profile/edit-user-profile'
 
 //UI
 import { StatusBar } from '@ionic-native/status-bar';
@@ -39,7 +41,9 @@ const firebaseConfig = {
     HomePage,
     LoginPage,
     InitialConfigurationPage,
-    InitialConfigurationTwoPage
+    InitialConfigurationTwoPage,
+    UserProfilePage,
+    EditUserProfilePage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,9 @@ const firebaseConfig = {
     HomePage,
     LoginPage,
     InitialConfigurationPage,
-    InitialConfigurationTwoPage
+    InitialConfigurationTwoPage,
+    UserProfilePage,
+    EditUserProfilePage
   ],
   providers: [
     StatusBar,

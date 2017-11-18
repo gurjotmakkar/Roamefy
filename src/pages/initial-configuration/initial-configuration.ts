@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { InitialConfigurationTwoPage } from '../initial-configuration-two/initial-configuration-two';
 import { Subscription } from 'rxjs/Subscription'

@@ -4,13 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
+import { UserProfilePage } from '../pages/user-profile/user-profile';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,19 +19,16 @@ import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
-  activePage: any;
-  userID: string;
   pages: Array<{title: string, component: any}>;
+  activePage: any;
 
   constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen, 
-    public firebaseProvider: FirebaseProvider) {
+    public firebase: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.userID = user.uid;
         this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
-        this.userID = null;
         this.rootPage = LoginPage;
         authObserver.unsubscribe();
       }
@@ -40,12 +37,13 @@ export class MyApp {
     this.initializeApp();
 
     this.pages = [
+      { title: "Profile", component: UserProfilePage },
       { title: "Home", component: HomePage },
       { title: "Interests", component: InitialConfigurationPage },
       { title: "Time and Distance", component: InitialConfigurationTwoPage }
     ];
 
-    this.activePage = this.pages[0];
+    this.activePage = this.pages[1];
 
   }
 
@@ -59,16 +57,14 @@ export class MyApp {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
     this.activePage = page;
+    this.nav.setRoot(page.component);
   }
 
   logout() {
     this.rootPage = LoginPage;
     this.nav.setRoot(LoginPage);
-    this.firebaseProvider.logoutUser();
+    this.firebase.logoutUser();
   }
 
   checkActive(page){
