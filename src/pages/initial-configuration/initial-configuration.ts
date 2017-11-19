@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { InitialConfigurationTwoPage } from '../initial-configuration-two/initial-configuration-two';
 import { Subscription } from 'rxjs/Subscription'
@@ -10,24 +9,19 @@ import { Subscription } from 'rxjs/Subscription'
   selector: 'page-initial-configuration',
   templateUrl: 'initial-configuration.html',
 })
+
 export class InitialConfigurationPage {
-  obj: FirebaseListObservable<any[]>;
   interest: any[] = [];
   subscription: Subscription;
   userID: string;
-  obj2: FirebaseObjectObservable<any>;
   subscription2: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
-    this.obj = this.firebase.getInterestList();
-    this.subscription = this.obj.subscribe(x => {
-      x.forEach(i => {
-        this.interest.push(i);
-      });
+    this.subscription = this.firebase.getInterestList().subscribe(x => {
+      this.interest = x;
     });
-    this.obj2 = this.firebase.getObject();
-    this.subscription2 = this.obj2.subscribe(x => {
+    this.subscription2 = this.firebase.getObject().subscribe(x => {
       this.userID = x.$key;
     });
   }
@@ -44,10 +38,8 @@ export class InitialConfigurationPage {
 
   toggleCheck(members, key){
     if(this.checkornot(members)){
-      this.interest = [];
       this.firebase.removeInterest(this.userID, key);
     } else {
-      this.interest = [];
       this.firebase.addInterest(this.userID, key);
     }
   }
@@ -59,10 +51,8 @@ export class InitialConfigurationPage {
   interestCount(){
     var count = 0;
     this.interest.forEach(item => {
-      item.forEach( i => {
-        if(this.checkornot(i.members))
+        if(this.checkornot(item.members))
           count++;
-      })
     })
     return count;
   }
@@ -84,11 +74,11 @@ export class InitialConfigurationPage {
     }
   }
 
-  /*
   ionViewWillLeave(){
     if(this.interestCount() >= 3){
-      this.navCtrl.pop();
+      console.log("leaving page")
     } else {
+      this.navCtrl.setRoot(InitialConfigurationPage);
       let alert = this.alertCtrl.create({
         message: "Please select at least 3 interests",
         buttons: [
@@ -101,11 +91,10 @@ export class InitialConfigurationPage {
       alert.present();
     }
   }
-  */
   
 ngOnDestroy() {
-  this.subscription.unsubscribe()
-  this.userID = null;
+  this.interest = [];
+  this.subscription.unsubscribe();
   this.subscription2.unsubscribe();
 }
 

@@ -45,9 +45,9 @@ export class FirebaseProvider {
         //this.logoutUser();
     });
   }
-
-  //user information while registration
-  addNewUserProfile(newId, newFirstName, newLastName) {
+  
+   //user information while registration
+   addNewUserProfile(newId, newFirstName, newLastName) {
     var user = this.afd.app.auth().currentUser;
     var usersRef = this.afd.app.database().ref("users");
     if (user) {
@@ -56,6 +56,29 @@ export class FirebaseProvider {
         lastName: newLastName,
         joinDate: new Date().getDate(),
         Configured: false
+      });
+    }
+  }
+
+  editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
+    return this.afAuth.auth.currentUser.updateEmail(newEmail)
+    .then(() => {
+        this.afAuth.auth.currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('verification email sent');
+        });
+        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
+        //this.logoutUser();
+    });
+  }
+
+  updateUser(Id, FirstName, LastName) {
+    var user = this.afd.app.auth().currentUser;
+    var usersRef = this.afd.app.database().ref("users");
+    if (user) {
+      usersRef.child(user.uid).update({ 
+        firstName: FirstName,
+        lastName: LastName
       });
     }
   }
@@ -82,6 +105,10 @@ export class FirebaseProvider {
     }
   }
 
+  getUserEmail() {
+    return this.afd.app.auth().currentUser.email;
+  }
+
   getInterestList() {
     return this.afd.list('/Interests');
   }
@@ -105,5 +132,6 @@ export class FirebaseProvider {
     const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
     time.set(value);    
   }
+  
 
 }
