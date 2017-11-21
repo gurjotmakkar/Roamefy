@@ -33,6 +33,7 @@ export class AddEventPage {
     };
 
   interest: any[] = [];
+  categories: any[] = [];
   subscription: Subscription;
   userID: string;
   subscription2: Subscription;
@@ -51,10 +52,11 @@ export class AddEventPage {
     console.log('ionViewDidLoad AddEventPage');
   }
 
-  addEvent(event: UserEvent) {
-      event.host = this.userID;
-      this.firebase.addEvent(event);
-      this.navCtrl.setRoot(UserEventsPage)
+  addEvent(event: UserEvent, categories) {
+    event.categories = categories
+    event.host = this.userID;
+    this.firebase.addEvent(event);
+    this.navCtrl.setRoot(UserEventsPage)
   }
   
 ngOnDestroy() {
