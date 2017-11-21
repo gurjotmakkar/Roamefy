@@ -20,6 +20,7 @@ export class InitialConfigurationPage {
       public alertCtrl: AlertController) {
     this.subscription = this.firebase.getInterestList().subscribe(x => {
       this.interest = x;
+      console.log(x)
     });
     this.subscription2 = this.firebase.getObject().subscribe(x => {
       this.userID = x.$key;
