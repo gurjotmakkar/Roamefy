@@ -3,12 +3,13 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 import { UserEvent } from "../../models/event/userevent.model";
+import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Injectable()
 export class FirebaseProvider {
   userID: string;
 
-  constructor(public afAuth: AngularFireAuth, public afd: AngularFireDatabase) {
+  constructor(public afAuth: AngularFireAuth, public afd: AngularFireDatabase, public afdOf: AngularFireOfflineDatabase) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
         this.userID = user.uid;
@@ -20,6 +21,8 @@ export class FirebaseProvider {
     });
   }
   
+  //-------------- user login ----------------
+
   loginUser(newEmail: string, newPassword: string): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
       .then(() => this.userID = this.afAuth.auth.currentUser.uid);
@@ -34,6 +37,8 @@ export class FirebaseProvider {
     .then(() => console.log("user logged out"))
     .catch(e => console.log("exception: " + e));
    }
+   
+  //-------------- user signup ----------------
 
    signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
@@ -47,18 +52,16 @@ export class FirebaseProvider {
     });
   }
   
-   //user information while registration
    addNewUserProfile(newId, newFirstName, newLastName) {
-    var user = this.afd.app.auth().currentUser;
-    var usersRef = this.afd.app.database().ref("users");
-    if (user) {
-      usersRef.child(user.uid).set({ 
+    var user = this.afAuth.auth.currentUser;
+    this.afdOf.object("users/" + user.uid)
+    .set(
+      { 
         firstName: newFirstName,
         lastName: newLastName,
         joinDate: new Date().getDate(),
         Configured: false
       });
-    }
   }
 
   editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
@@ -74,30 +77,39 @@ export class FirebaseProvider {
   }
 
   updateUser(Id, FirstName, LastName) {
-    var user = this.afd.app.auth().currentUser;
-    var usersRef = this.afd.app.database().ref("users");
-    if (user) {
-      usersRef.child(user.uid).update({ 
+    var user = this.afAuth.auth.currentUser;
+    var usersRef = this.afdOf.object("users/" + Id)
+    .update({ 
         firstName: FirstName,
         lastName: LastName
       });
-    }
   }
 
+  //-------------- user info ----------------
+
   getObject(){
-    return this.afd.object(`users/${this.userID}/`);
+    return this.afdOf.object(`users/${this.userID}/`);
+  }
+
+  getUserId(){
+    return this.userID;
+  }
+
+  getUserEmail() {
+    return this.afAuth.auth.currentUser.email;
   }
 
   configureUser(id){
-    this.afd.app.database().ref('users').child(this.userID).child('Configured').set(true);
+    //this.afd.app.database().ref('users').child(this.userID).child('Configured').set(true);
+    this.afd.object("/users/" + this.userID + "/Configured").set(true);
   }
 
   isUserConfigured(id){
-    var db = this.afd.app.database().ref('users').child(this.userID).child('Configured');
     var configured;
-    db.on('value', function(snapshot) {
-       configured = snapshot.val();
+    var db = this.afdOf.object("users/" + this.userID).subscribe( x => {
+      configured = x.Configured;
     });
+    db.unsubscribe();
     if(configured == false) {
       return true;
     }
@@ -106,56 +118,80 @@ export class FirebaseProvider {
     }
   }
 
-  getUserEmail() {
-    return this.afd.app.auth().currentUser.email;
-  }
+  //-------------- interest ----------------
 
   getInterestList() {
-    return this.afd.list('/Interests');
+    //return this.afd.list('/Interests');
+    return this.afdOf.list('/Interests');
   }
 
   addInterest(id, itemKey) {
-    const members = this.afd.app.database().ref(`Interests/${itemKey}/members`)
-    members.child(this.userID).set(true);
+    //const members = this.afd.app.database().ref(`Interests/${itemKey}/members`)
+    //members.child(this.userID).set(true);
+    this.afdOf.object("Interests/" + itemKey + "/members/" + this.userID).set(true);
   }
 
   removeInterest(id, itemKey) {
-    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
-    member.remove()
+    //const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
+    //member.remove()
+    this.afdOf.object("Interests/" + itemKey + "/members/" + this.userID).remove();
   }
 
+  getInterestName(itemKey){
+    var interest;
+    var db = this.afdOf.object("Interests/" + itemKey).subscribe( x => {
+      interest = x.name;
+    });
+    db.unsubscribe();
+    return interest;
+  }
+
+  //-------------- distance and time ----------------
+
   updateDistance(id, value){
-    const distance = this.afd.app.database().ref(`users/${this.userID}/distance/`);
-    distance.set(value);
+    //const distance = this.afd.app.database().ref(`users/${this.userID}/distance/`);
+    //distance.set(value);
+    this.afdOf.object("users/" + this.userID + "/distance/").set(value);
   }
 
   updateTime(id, value){
-    const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
-    time.set(value);    
+    //const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
+    //time.set(value);    
+    this.afdOf.object("users/" + this.userID + "/time/").set(value);    
   }
   
-    getUserEvents() {
-      return this.afd.list('/Events/');
-    }
-    
-    getSpecifiedUserEvents(id) {
-      return this.afd.object(`Events/${id}`);
-    }
+  //-------------- event ----------------
+
+  getUserEvents() {
+    return this.afdOf.list('/Events/', {
+      query: {
+        orderByChild: 'host',
+        equalTo: this.userID 
+      }
+    });
+  }
+
+  getSpecifiedEvent(eventID){
+    return this.afdOf.object('/Events/' + eventID);
+  }
 
   addEvent(event: UserEvent) {
-    var eventRef = this.afd.app.database().ref("Events");
-    eventRef.push(event);
+    //var eventRef = this.afd.app.database().ref("Events");
+    //eventRef.push(event);
+    this.afdOf.list("Events").push(event);
   }
 
   updateEvent(id, event: UserEvent) {
-    var eventRef = this.afd.app.database().ref(`Events/${id}`);
-    console.log(id)
-    eventRef.set(event);
+    //var eventRef = this.afd.app.database().ref(`Events/${id}`);
+    //console.log(id)
+    //eventRef.set(event);
+    this.afdOf.object("Events/" + id).set(event)
   }
 
   removeEvent(id) {
-    const eventRef = this.afd.app.database().ref(`Events/${id}`);
-    eventRef.remove();
+    //const eventRef = this.afd.app.database().ref(`Events/${id}`);
+    //eventRef.remove();
+    this.afdOf.object("Events/" + id).remove();
   }
 
 }

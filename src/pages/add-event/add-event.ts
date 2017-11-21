@@ -36,16 +36,12 @@ export class AddEventPage {
   categories: any[] = [];
   subscription: Subscription;
   userID: string;
-  subscription2: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
     this.subscription = this.firebase.getInterestList().subscribe(x => {
       this.interest = x;
     });
-
-    this.subscription2 = this.firebase.getObject().subscribe(x => {
-      this.userID = x.$key;
-    });
+    this.userID = this.firebase.getUserId();
    }
 
   ionViewDidLoad() {
@@ -59,9 +55,12 @@ export class AddEventPage {
     this.navCtrl.setRoot(UserEventsPage)
   }
   
-ngOnDestroy() {
-  this.interest = [];
-  this.subscription.unsubscribe();
-  this.subscription2.unsubscribe();
-}
+  cancel(){
+    this.navCtrl.setRoot(UserEventsPage)
+  }
+
+  ngOnDestroy() {
+    this.interest = [];
+    this.subscription.unsubscribe();
+  }
 }

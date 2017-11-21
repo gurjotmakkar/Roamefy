@@ -15,20 +15,29 @@ export class UserEventsPage {
   userEvents: any[] = [];
   subscription: Subscription;
   userID: string;
-  subscription2: Subscription;
   
   constructor(public navCtrl: NavController, private firebase: FirebaseProvider) {
-    this.subscription2 = this.firebase.getObject().subscribe(x => {
-      this.userID = x.$key;
-    });
+    this.userID = this.firebase.getUserId();
     this.userEvents = [];
     this.subscription = this.firebase.getUserEvents().subscribe(x => {
-      x.forEach(i => {
-        if(i.host == this.userID)
-          this.userEvents.push(i)
-      });
+      this.userEvents = x;
     });
   }
+
+  getCategories(events){
+    var categories: string;
+    if(events){
+      events.forEach( x => {
+        if(categories)
+          categories += ", " + this.firebase.getInterestName(x);
+        else
+          categories = this.firebase.getInterestName(x);
+      });
+      return categories;
+    } else {
+      return null;
+    }
+  }  
 
   addEventPage(){
     this.navCtrl.setRoot(AddEventPage)
@@ -40,7 +49,6 @@ export class UserEventsPage {
 
   ngOnDestroy() {
     this.userEvents = [];
-    this.subscription2.unsubscribe();
     this.subscription.unsubscribe();
   }
 

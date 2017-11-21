@@ -20,7 +20,7 @@ export class EditUserEventPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
     this.eventKey = this.navParams.get('id');
-    this.subscription = this.firebase.getSpecifiedUserEvents(this.eventKey).subscribe(x => {
+    this.subscription = this.firebase.getSpecifiedEvent(this.eventKey).subscribe(x => {
       this.event = x;
     })
     this.categories = this.event.categories;
@@ -30,11 +30,13 @@ export class EditUserEventPage {
   }
 
   checkornot(interestKey){
-    this.categories.forEach( x => {
-      if (x == interestKey){
-        return true;
-      }
-    })
+    if(this.categories != null){
+      this.categories.forEach( x => {
+        if (x == interestKey){
+          return true;
+        }
+      })
+    }
     return false;
   }
 
@@ -46,6 +48,10 @@ export class EditUserEventPage {
 
   removeEvent(event: UserEvent) {
     this.firebase.removeEvent(this.eventKey);
+    this.navCtrl.setRoot(UserEventsPage)
+  }
+  
+  cancel(){
     this.navCtrl.setRoot(UserEventsPage)
   }
 
