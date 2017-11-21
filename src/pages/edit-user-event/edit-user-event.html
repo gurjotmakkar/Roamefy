@@ -1,0 +1,87 @@
+<!--
+  Generated template for the EditUserEventPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  
+    <ion-navbar>
+      <ion-title>{{event?.name}}</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>     
+    <ion-item>
+      <ion-label floating>Event Name</ion-label>
+      <ion-input [(ngModel)]="event.name"></ion-input>
+    </ion-item>
+          
+    <ion-item>
+      <ion-label floating>Event Description</ion-label>
+      <ion-input [(ngModel)]="event.description"></ion-input>
+    </ion-item>
+          
+    <ion-item>
+      <ion-label floating>Price</ion-label>
+      <ion-input [(ngModel)]="event.price" type="number"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Start Date</ion-label>
+      <ion-datetime [(ngModel)]="event.startDate" displayFormat="D MMMM YYYY" min="2017" max="2019-12-31">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Start Time</ion-label>
+      <ion-datetime [(ngModel)]="event.startTime" displayFormat="hh:mm A">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>End Date</ion-label>
+      <ion-datetime [(ngModel)]="event.endDate" displayFormat="D MMMM YYYY" min="2017" max="2019-12-31">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>End Time</ion-label>
+      <ion-datetime [(ngModel)]="event.endTime" displayFormat="hh:mm A">
+      </ion-datetime>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Event Address</ion-label>
+      <ion-input [(ngModel)]="event.address"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Event Lat</ion-label>
+      <ion-input [(ngModel)]="event.latitude" type="number"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Event Long</ion-label>
+      <ion-input [(ngModel)]="event.longitude" type="number"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Website</ion-label>
+      <ion-input [(ngModel)]="event.website"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Contact Phone</ion-label>
+      <ion-input [(ngModel)]="event.phone"></ion-input>
+    </ion-item>
+          
+    {{event | json}}
+  
+    <br><br>
+    <button ion-button black clear (click) = "saveEvent(event)">Save</button>       
+    <button ion-button black clear color="danger" (click) = "removeEvent(event)">Remove</button>
+  </ion-content>
+  

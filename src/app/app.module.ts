@@ -10,6 +10,8 @@ import { InitialConfigurationPage } from '../pages/initial-configuration/initial
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 import { UserProfilePage } from '../pages/user-profile/user-profile'
 import { EditUserProfilePage } from '../pages/edit-user-profile/edit-user-profile'
+import { AddEventPage } from '../pages/add-event/add-event'
+import { EditUserEventPage } from '../pages/edit-user-event/edit-user-event'
 
 //UI
 import { StatusBar } from '@ionic-native/status-bar';
@@ -17,6 +19,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 //Import angularfire and firebase module
 import { HttpModule } from '@angular/http';
+import { HttpProvider } from '../providers/http/http';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseProvider } from './../providers/firebase/firebase';
@@ -41,7 +44,9 @@ const firebaseConfig = {
     InitialConfigurationPage,
     InitialConfigurationTwoPage,
     UserProfilePage,
-    EditUserProfilePage
+    EditUserProfilePage,
+    AddEventPage,
+    EditUserEventPage
   ],
   imports: [
     BrowserModule,
@@ -59,13 +64,16 @@ const firebaseConfig = {
     InitialConfigurationPage,
     InitialConfigurationTwoPage,
     UserProfilePage,
-    EditUserProfilePage
+    EditUserProfilePage,
+    AddEventPage,
+    EditUserEventPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FirebaseProvider
+    FirebaseProvider,
+    HttpProvider
   ]
 })
 export class AppModule {}

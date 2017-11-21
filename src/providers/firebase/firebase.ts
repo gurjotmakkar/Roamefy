@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import { UserEvent } from "../../models/event/userevent.model";
 
 @Injectable()
 export class FirebaseProvider {
@@ -132,6 +133,40 @@ export class FirebaseProvider {
     const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
     time.set(value);    
   }
-  
+
+  getUserEvents() {
+    return this.afd.list('/Events/');
+  }
+
+  addEvent(event: UserEvent) {
+    var eventRef = this.afd.app.database().ref("Events");
+    eventRef.push(event);
+  }
+
+  /*
+  editEvent(id, itemKey) {
+    var eventRef = this.afd.app.database().ref(`Events/${itemKey}`);
+    eventRef.update({ 
+        name: string;
+        description: string;
+        price?: number;
+        startDate: Date;
+        startTime: Date;
+        endDate: Date;
+        endTime: Date;
+        address: string; // change to Address object
+        latitude: number;
+        longitude: number;
+        website: string;
+        phone: string;
+        categories: Array<string>
+      });
+  }
+*/
+
+  removeEvent(id, itemKey) {
+    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
+    member.remove()
+  }
 
 }
