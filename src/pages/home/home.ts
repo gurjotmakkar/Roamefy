@@ -1,6 +1,6 @@
 import { Component , ViewChild,ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Headers, Http, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {HttpProvider} from '../../providers/http/http'; //importing provider 
 
@@ -29,7 +29,7 @@ export class HomePage {
   }
 
   displayGoogleMap(){
-    let latLng = new google.maps.LatLng(43.653908,-79.384293);
+    let latLng = new google.maps.LatLng(43.653908,-79.384293); //TODO: change it to current location
     let mapOptions = {
       center:latLng,
       zoom:12,
@@ -39,10 +39,7 @@ export class HomePage {
   }
 
   getMarkers(){
-    let headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers: headers});
-    this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500', options).map((res)=>res.json()).subscribe(data=>{
+    this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500').map((res)=>res.json()).subscribe(data=>{
       this.addMarkersMap(data);
     });
   }
@@ -78,7 +75,7 @@ export class HomePage {
                                    '</div>' + //end content
                                    '<div class="iw-bottom-gradient"></div>' +
                                    '</div>' //end container
-      console.log(name); //displays name of each event within this object
+      //console.log(name); //displays name of each event within this object
    
       marker = new google.maps.Marker({
         position: loc,
@@ -145,15 +142,15 @@ export class HomePage {
  
   getdata(){
     this.httpProvider.getJsonData().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.eventData=JSON.parse(JSON.stringify(data));
-      console.log(this.eventData);
+      //console.log(this.eventData);
     },
     err =>{
       console.error("Error : " +err);
     },
     () => {
-      console.log('getData completed');
+      //console.log('getData completed');
     });
   } 
 }

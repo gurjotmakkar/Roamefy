@@ -133,40 +133,29 @@ export class FirebaseProvider {
     const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
     time.set(value);    
   }
-
-  getUserEvents() {
-    return this.afd.list('/Events/');
-  }
+  
+    getUserEvents() {
+      return this.afd.list('/Events/');
+    }
+    
+    getSpecifiedUserEvents(id) {
+      return this.afd.object(`Events/${id}`);
+    }
 
   addEvent(event: UserEvent) {
     var eventRef = this.afd.app.database().ref("Events");
     eventRef.push(event);
   }
 
-  /*
-  editEvent(id, itemKey) {
-    var eventRef = this.afd.app.database().ref(`Events/${itemKey}`);
-    eventRef.update({ 
-        name: string;
-        description: string;
-        price?: number;
-        startDate: Date;
-        startTime: Date;
-        endDate: Date;
-        endTime: Date;
-        address: string; // change to Address object
-        latitude: number;
-        longitude: number;
-        website: string;
-        phone: string;
-        categories: Array<string>
-      });
+  updateEvent(id, event: UserEvent) {
+    var eventRef = this.afd.app.database().ref(`Events/${id}`);
+    console.log(id)
+    eventRef.set(event);
   }
-*/
 
-  removeEvent(id, itemKey) {
-    const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
-    member.remove()
+  removeEvent(id) {
+    const eventRef = this.afd.app.database().ref(`Events/${id}`);
+    eventRef.remove();
   }
 
 }

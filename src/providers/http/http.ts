@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -19,9 +19,6 @@ export class HttpProvider {
   Json() is called on the response to return data.
 */
   getJsonData(){
-    let headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers: headers});
-    return this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500', options).map((res)=>res.json())
+    return this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500').map((res)=>res.json())
   }
 }
