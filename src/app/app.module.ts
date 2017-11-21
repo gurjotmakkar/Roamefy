@@ -12,6 +12,7 @@ import { UserProfilePage } from '../pages/user-profile/user-profile'
 import { EditUserProfilePage } from '../pages/edit-user-profile/edit-user-profile'
 import { AddEventPage } from '../pages/add-event/add-event'
 import { EditUserEventPage } from '../pages/edit-user-event/edit-user-event'
+import { UserEventsPage } from '../pages/user-events/user-events';
 
 //UI
 import { StatusBar } from '@ionic-native/status-bar';
@@ -47,7 +48,8 @@ const firebaseConfig = {
     UserProfilePage,
     EditUserProfilePage,
     AddEventPage,
-    EditUserEventPage
+    EditUserEventPage,
+    UserEventsPage
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,8 @@ const firebaseConfig = {
     UserProfilePage,
     EditUserProfilePage,
     AddEventPage,
-    EditUserEventPage
+    EditUserEventPage,
+    UserEventsPage
   ],
   providers: [
     StatusBar,

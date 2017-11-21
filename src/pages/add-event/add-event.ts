@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { Subscription } from 'rxjs/Subscription'
+import { UserEventsPage } from '../user-events/user-events'
 
 @IonicPage(
   {
@@ -51,10 +52,9 @@ export class AddEventPage {
   }
 
   addEvent(event: UserEvent) {
-    if(event.name != null){
       event.host = this.userID;
       this.firebase.addEvent(event);
-    }
+      this.navCtrl.setRoot(UserEventsPage)
   }
   
 ngOnDestroy() {

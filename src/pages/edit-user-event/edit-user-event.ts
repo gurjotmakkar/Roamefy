@@ -2,13 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
-
-/**
- * Generated class for the EditUserEventPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Subscription } from 'rxjs/Subscription'
+import { UserEventsPage } from '../user-events/user-events'
 
 @IonicPage()
 @Component({
@@ -16,30 +11,30 @@ import { FirebaseProvider } from '../../providers/firebase/firebase'
   templateUrl: 'edit-user-event.html',
 })
 export class EditUserEventPage {
-
+  eventKey: string;
   event: UserEvent;
+  subscription: Subscription;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private firebase: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
+    this.eventKey = this.navParams.get('id');
+    this.subscription = this.firebase.getSpecifiedUserEvents(this.eventKey).subscribe(x => {
+      this.event = x;
+    })
+    console.log(this.eventKey)
   }
 
-  ionViewWillLoad() {
-    this.event = this.navParams.get('event');
-  }
-/*
-  saveEvent(event: UserEvent) {
-    this.events.editEvent(event).then(() => {
-      this.toast.show(`${event.name} saved!`);
-      this.navCtrl.setRoot('HomePage');
-    });
+  updateEvent(event: UserEvent) {
+    this.firebase.updateEvent(this.eventKey, event);
+    this.navCtrl.setRoot(UserEventsPage)
   }
 
   removeEvent(event: UserEvent) {
-    this.events.removeEvent(event)
-      .then(() => {
-        this.toast.show(`${event.name} deleted!`);
-        this.navCtrl.setRoot('HomePage');
-      });
+    this.firebase.removeEvent(this.eventKey);
+    this.navCtrl.setRoot(UserEventsPage)
   }
-*/
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
 }

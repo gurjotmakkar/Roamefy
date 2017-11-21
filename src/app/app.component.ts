@@ -11,7 +11,7 @@ import { LoginPage } from '../pages/login/login';
 import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
-import { AddEventPage } from '../pages/add-event/add-event'
+import { UserEventsPage } from '../pages/user-events/user-events';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +27,7 @@ export class MyApp {
     public firebase: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = AddEventPage; //HomePage;
+        this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
@@ -42,7 +42,7 @@ export class MyApp {
       { title: "Profile", component: UserProfilePage },
       { title: "Interests", component: InitialConfigurationPage },
       { title: "Time and Distance", component: InitialConfigurationTwoPage },
-      { title: "Add Event", component: AddEventPage}
+      { title: "User Event", component: UserEventsPage}
     ];
 
     this.activePage = this.pages[0];
