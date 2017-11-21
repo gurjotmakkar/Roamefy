@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { UserEvent } from '../../models/event/userevent.model';
+import { IonicPage, NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { Subscription } from 'rxjs/Subscription'
 import { AddEventPage } from '../add-event/add-event'
