@@ -14,16 +14,13 @@ export class InitialConfigurationPage {
   interest: any[] = [];
   subscription: Subscription;
   userID: string;
-  subscription2: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
     this.subscription = this.firebase.getInterestList().subscribe(x => {
       this.interest = x;
     });
-    this.subscription2 = this.firebase.getObject().subscribe(x => {
-      this.userID = x.$key;
-    });
+      this.userID = this.firebase.getUserId();
   }
 
   checkornot(members){
@@ -38,8 +35,10 @@ export class InitialConfigurationPage {
 
   toggleCheck(members, key){
     if(this.checkornot(members)){
+      console.log("checked")
       this.firebase.removeInterest(this.userID, key);
     } else {
+      console.log("unchecked")
       this.firebase.addInterest(this.userID, key);
     }
   }
@@ -95,7 +94,6 @@ export class InitialConfigurationPage {
   ngOnDestroy() {
     this.interest = [];
     this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
   }
 
 }

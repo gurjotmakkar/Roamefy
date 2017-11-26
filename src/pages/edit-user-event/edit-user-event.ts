@@ -14,16 +14,34 @@ export class EditUserEventPage {
   eventKey: string;
   event: UserEvent;
   subscription: Subscription;
+  interest: any[] = [];
+  subscription2: Subscription;
+  categories: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
     this.eventKey = this.navParams.get('id');
-    this.subscription = this.firebase.getSpecifiedUserEvents(this.eventKey).subscribe(x => {
+    this.subscription = this.firebase.getSpecifiedEvent(this.eventKey).subscribe(x => {
       this.event = x;
     })
-    console.log(this.eventKey)
+    this.categories = this.event.categories;
+    this.subscription2 = this.firebase.getInterestList().subscribe(x => {
+      this.interest = x;
+    });
   }
 
-  updateEvent(event: UserEvent) {
+  checkornot(interestKey){
+    if(this.categories != null){
+      this.categories.forEach( x => {
+        if (x == interestKey){
+          return true;
+        }
+      })
+    }
+    return false;
+  }
+
+  updateEvent(event: UserEvent, categories) {
+    event.categories = categories;
     this.firebase.updateEvent(this.eventKey, event);
     this.navCtrl.setRoot(UserEventsPage)
   }
@@ -32,9 +50,15 @@ export class EditUserEventPage {
     this.firebase.removeEvent(this.eventKey);
     this.navCtrl.setRoot(UserEventsPage)
   }
+  
+  cancel(){
+    this.navCtrl.setRoot(UserEventsPage)
+  }
 
   ngOnDestroy(){
+    this.interest = [];
     this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 
 }

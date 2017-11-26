@@ -71,7 +71,18 @@
       <ion-label floating>Contact Phone</ion-label>
       <ion-input [(ngModel)]="event.phone"></ion-input>
     </ion-item>
-    <button ion-button black clear (click) = "updateEvent(event)">Update</button>       
+
+    <ion-item>
+      <ion-label>Categories</ion-label>
+      <ion-select [(ngModel)]="categories" multiple="true" cancelText="Cancel" okText="Update">
+        <ion-option *ngFor="let item of interest" value={{item.$key}} [selected]="checkornot(item.$key)">{{item.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    
+    <button ion-button black clear (click) = "updateEvent(event, categories)">Update</button>       
+    
     <button ion-button black clear color="danger" (click) = "removeEvent()">Remove</button>
+    
+    <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>  
   </ion-content>
   

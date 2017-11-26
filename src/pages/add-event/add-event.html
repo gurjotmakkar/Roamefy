@@ -65,9 +65,12 @@
 
   <ion-item>
     <ion-label>Categories</ion-label>
-    <ion-select *ngFor="let item of interest" multiple="true" cancelText="Cancel" okText="Save!">
-      <ion-option value='item.name'>{{item.name}}</ion-option>
+    <ion-select [(ngModel)]="categories" multiple="true" cancelText="Cancel" okText="Add">
+      <ion-option *ngFor="let item of interest" value={{item.$key}}>{{item.name}}</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-button black clear (click) = "addEvent(event)">Add</button>       
+  
+  <button ion-button black clear (click) = "addEvent(event, categories)">Add</button> 
+  
+  <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>      
 </ion-content>

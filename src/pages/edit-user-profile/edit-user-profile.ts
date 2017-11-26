@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
+import { UserProfilePage } from '../user-profile/user-profile'
 
 @IonicPage()
 @Component({
@@ -27,6 +28,10 @@ export class EditUserProfilePage {
       lastName: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])]
     });
+  }
+  
+  cancel(){
+    this.nav.setRoot(UserProfilePage)
   }
 
   editUserProfile(){

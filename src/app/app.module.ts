@@ -26,6 +26,7 @@ import { AngularFireModule } from 'angularfire2';
 //import { AngularFireDatabase } from 'angularfire2/database';
 import { FirebaseProvider } from './../providers/firebase/firebase';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -58,7 +59,11 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     IonicModule.forRoot(MyApp),
     AngularFireAuthModule,
+<<<<<<< HEAD
   //  AngularFireDatabase
+=======
+    AngularFireOfflineModule
+>>>>>>> 276449b5e0880e2e6ec51e4bc8e9654f9cff59b5
   ],
   bootstrap: [IonicApp],
   entryComponents: [

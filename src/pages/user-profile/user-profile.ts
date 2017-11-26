@@ -18,10 +18,10 @@ export class UserProfilePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider, 
     public alertCtrl: AlertController) {
     this.subscription = this.firebase.getObject().subscribe(x => {
-      this.userID = x.$key;
       this.userName = x.firstName + " " + x.lastName;
       this.userEmail = this.firebase.getUserEmail();
     });
+    this.userID = this.firebase.getUserId();
   }
 
   edit(){

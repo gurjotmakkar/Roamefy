@@ -17,17 +17,15 @@ export class InitialConfigurationTwoPage {
   distance: number = 0;
   time: number = 0;
   userID: string;
-  obj: FirebaseObjectObservable<any>;
   subscription: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, public alertCtrl: AlertController) {
-    this.obj = this.firebase.getObject();
-    this.subscription = this.obj.subscribe(x => {
+    this.subscription = this.firebase.getObject().subscribe(x => {
       this.distance = x.distance;
       this.time = x.time;
-      this.userID = x.$key;
     })
+    this.userID = this.firebase.getUserId();
   }
 
   updateDistance(distance){
