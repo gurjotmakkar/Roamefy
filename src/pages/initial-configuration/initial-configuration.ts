@@ -57,11 +57,11 @@ export class InitialConfigurationPage {
   }
 
   nextSetupPage(){
-    if(this.interestCount() >= 3){
+    if(this.interestCount() >= 1){
       this.navCtrl.setRoot(InitialConfigurationTwoPage);
     }else {
       let alert = this.alertCtrl.create({
-      message: "Please select at least 3 interests",
+      message: "Please select at least 1 interests",
       buttons: [
         {
           text: "Ok",
@@ -74,12 +74,12 @@ export class InitialConfigurationPage {
   }
 
   ionViewWillLeave(){
-    if(this.interestCount() >= 3){
+    if(this.interestCount() >= 1){
       console.log("leaving page")
     } else {
       this.navCtrl.setRoot(InitialConfigurationPage);
       let alert = this.alertCtrl.create({
-        message: "Please select at least 3 interests",
+        message: "Please select at least 1 interests",
         buttons: [
           {
             text: "Ok",

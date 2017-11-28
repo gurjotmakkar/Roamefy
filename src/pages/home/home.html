@@ -7,6 +7,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div #map id="map" style="height:100%"></div>
+<ion-content>
+  <ion-tabs>
+    <ion-tab [root]="mapView" tabIcon="ios-locate">Map</ion-tab>
+    <ion-tab [root]="listView" tabIcon="ios-list">List</ion-tab>
+  </ion-tabs>
 </ion-content>

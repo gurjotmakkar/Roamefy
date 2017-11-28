@@ -3,7 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 import { UserEvent } from "../../models/event/userevent.model";
-import { AfoListObservable, AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+import { AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 
 @Injectable()
 export class FirebaseProvider {
@@ -77,8 +77,7 @@ export class FirebaseProvider {
   }
 
   updateUser(Id, FirstName, LastName) {
-    var user = this.afAuth.auth.currentUser;
-    var usersRef = this.afdOf.object("users/" + Id)
+    this.afdOf.object("users/" + Id)
     .update({ 
         firstName: FirstName,
         lastName: LastName
