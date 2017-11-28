@@ -21,13 +21,9 @@ export class FirebaseProvider {
     });
   }
   
-<<<<<<< HEAD
-  loginUser(newEmail: string, newPassword: string) {
-=======
   //-------------- user login ----------------
 
   loginUser(newEmail: string, newPassword: string): Promise<any> {
->>>>>>> 276449b5e0880e2e6ec51e4bc8e9654f9cff59b5
     return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
       .then(() => this.userID = this.afAuth.auth.currentUser.uid);
    }
