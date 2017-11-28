@@ -12,6 +12,7 @@ import { InitialConfigurationPage } from '../pages/initial-configuration/initial
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { UserEventsPage } from '../pages/user-events/user-events';
+import { AddEventPage } from '../pages/add-event/add-event';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,7 @@ export class MyApp {
     public firebase: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = HomePage;
+        this.rootPage = AddEventPage; //HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
