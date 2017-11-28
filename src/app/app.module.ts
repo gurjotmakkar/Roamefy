@@ -23,6 +23,7 @@ import { HttpModule } from '@angular/http';
 import { HttpProvider } from '../providers/http/http';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
+//import { AngularFireDatabase } from 'angularfire2/database';
 import { FirebaseProvider } from './../providers/firebase/firebase';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireOfflineModule } from 'angularfire2-offline';

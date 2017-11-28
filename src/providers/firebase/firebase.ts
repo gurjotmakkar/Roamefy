@@ -28,11 +28,11 @@ export class FirebaseProvider {
       .then(() => this.userID = this.afAuth.auth.currentUser.uid);
    }
 
-   resetPassword(email: string): Promise<any> {
+   resetPassword(email: string) {
     return this.afAuth.auth.sendPasswordResetEmail(email);
    }
 
-   logoutUser(): Promise<any> {
+   logoutUser() {
     return this.afAuth.auth.signOut()
     .then(() => console.log("user logged out"))
     .catch(e => console.log("exception: " + e));
@@ -40,7 +40,7 @@ export class FirebaseProvider {
    
   //-------------- user signup ----------------
 
-   signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string): Promise<any> {
+   signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
     .then(() => {
         this.afAuth.auth.currentUser.sendEmailVerification()
