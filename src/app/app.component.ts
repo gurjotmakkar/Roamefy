@@ -12,7 +12,6 @@ import { InitialConfigurationPage } from '../pages/initial-configuration/initial
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { UserEventsPage } from '../pages/user-events/user-events';
-import { AddEventPage } from '../pages/add-event/add-event';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,13 +21,14 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any;
   pages: Array<{title: string, component: any}>;
+  userEventPage: {title: string, component: any};
   activePage: any;
 
   constructor(public platform: Platform, afAuth: AngularFireAuth, public statusBar: StatusBar, public splashScreen: SplashScreen, 
     public firebase: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = AddEventPage; //HomePage;
+        this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
@@ -42,9 +42,10 @@ export class MyApp {
       { title: "Home", component: HomePage },
       { title: "Profile", component: UserProfilePage },
       { title: "Interests", component: InitialConfigurationPage },
-      { title: "Time and Distance", component: InitialConfigurationTwoPage },
-      { title: "User Event", component: UserEventsPage}
+      { title: "Time and Distance", component: InitialConfigurationTwoPage }
     ];
+
+    this.userEventPage = { title: "Add Event", component: UserEventsPage };
 
     this.activePage = this.pages[0];
 
@@ -74,4 +75,7 @@ export class MyApp {
     return page = this.activePage;
   }
 
+  checkUserRole(){
+    return this.firebase.checkUserRole();
+  }
 }

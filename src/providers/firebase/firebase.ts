@@ -40,7 +40,7 @@ export class FirebaseProvider {
    
   //-------------- user signup ----------------
 
-   signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string) {
+  signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
     .then(() => {
         this.afAuth.auth.currentUser.sendEmailVerification()
@@ -62,6 +62,38 @@ export class FirebaseProvider {
         joinDate: new Date().getDate(),
         Configured: false
       });
+    this.afdOf.object("Roles/Normal/" + user.uid).set(true);
+  }
+
+   signupProUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string, 
+    newAddress: string, newDOB: string, newDLN: string, newPhoneNumber: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
+    .then(() => {
+        this.afAuth.auth.currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('verification email sent');
+        });
+        this.addProUserProfile(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, 
+          newAddress, newDOB, newDLN, newPhoneNumber);
+        //this.logoutUser();
+    });
+  }
+  
+   addProUserProfile(newId, newFirstName, newLastName, newAddress, newDOB, newDLN, newPhoneNumber) {
+    var user = this.afAuth.auth.currentUser;
+    this.afdOf.object("users/" + user.uid)
+    .set(
+      { 
+        firstName: newFirstName,
+        lastName: newLastName,
+        joinDate: new Date().getDate(),
+        Configured: false,
+        dateOfBirth: newDOB,
+        address: newAddress,
+        driverLicenceNumber: newDLN,
+        phoneNumber: newPhoneNumber
+      });
+    this.afdOf.object("Roles/Pro/" + user.uid).set(true);
   }
 
   editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
@@ -96,6 +128,18 @@ export class FirebaseProvider {
 
   getUserEmail() {
     return this.afAuth.auth.currentUser.email;
+  }
+
+  checkUserRole(){
+    var checker = false;
+    var db = this.afdOf.list("Roles/Pro/").subscribe( x => {
+      x.forEach(i => {
+        if (i.$key == this.userID)
+          checker = true;
+      });
+    });
+    db.unsubscribe();
+    return checker;
   }
 
   configureUser(id){

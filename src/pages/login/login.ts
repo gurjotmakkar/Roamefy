@@ -98,4 +98,8 @@ export class LoginPage {
     this.navCtrl.push('SignupPage');
   }
 
+  createProAccount(){
+    this.navCtrl.push('SignupProPage');
+  }
+
 }
