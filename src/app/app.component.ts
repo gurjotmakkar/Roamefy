@@ -28,7 +28,7 @@ export class MyApp {
     public firebase: FirebaseProvider) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
-        this.rootPage = AddEventPage; //HomePage;
+        this.rootPage = HomePage;
         authObserver.unsubscribe();
       } else {
         this.rootPage = LoginPage;
