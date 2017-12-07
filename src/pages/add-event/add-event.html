@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Add Event</ion-title>
+    <ion-title>Create Event</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -14,7 +14,7 @@
     <ion-item class="form-group">
       <ion-label floating>Event Name</ion-label>
       <ion-input [(ngModel)]="event.name" type="text" name="name" required minlength="5"
-      maxlength="64" #name="ngModel" [class.invalid]="name.errors 
+      maxlength="64" pattern="[^0-9]*" #name="ngModel" [class.invalid]="name.errors 
       && (name.dirty || name.touched)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="name.errors && (name.dirty || name.touched)">
@@ -24,10 +24,12 @@
       <p [hidden]="!name.errors.minlength">
           Event name must be at least 5 characters long.
       </p>
-      
       <p [hidden]="!name.errors.maxlength">
           Event name cannot be more than 64 characters long.
       </p>
+      <p [hidden]="!name.errors.pattern">
+        Only letters are allowed.
+    </p>
     </ion-item>
 
   <ion-item>
@@ -52,8 +54,8 @@
 
   <ion-item>
     <ion-label floating>Price</ion-label>
-    <ion-input [(ngModel)]="event.price" type="number" name="price" required pattern="[0-9]{1,}" 
-    min="0" #price="ngModel" [class.invalid]="price.errors 
+    <ion-input [(ngModel)]="event.price" type="number" name="price" required maxlength="5" pattern="[0-9]{1,}" 
+    #price="ngModel" [class.invalid]="price.errors 
     && (price.dirty || price.touched)"></ion-input>
   </ion-item>
 
@@ -64,12 +66,15 @@
       <p [hidden]="!price.errors.pattern">
           Price is not a valid price.
       </p>
+      <p [hidden]="!price.errors.maxlength">
+        Price is not a valid price.
+      </p>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Start Date</ion-label>
     <ion-datetime [(ngModel)]="event.startDate" name="startDate" displayFormat="D MMMM YYYY" 
-    min="2017-11-29" max="2019-12-31" required #startDate="ngModel" [class.invalid]="startDate.errors 
+    min="2017-12-07" max="2019-12-31" required #startDate="ngModel" [class.invalid]="startDate.errors 
     && (startDate.dirty || startDate.touched)">
     </ion-datetime>
   </ion-item>
@@ -150,7 +155,7 @@
     </ion-select>
   </ion-item>
 
-  <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Add</button> 
+  <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
   
   <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>      
 </form>
