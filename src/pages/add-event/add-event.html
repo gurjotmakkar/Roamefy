@@ -153,9 +153,13 @@
 
   <ion-item>
     <ion-label>Categories</ion-label>
-    <ion-select [(ngModel)]="categories" name="categories" multiple="true" cancelText="Cancel" okText="Add">
+    <ion-select [(ngModel)]="categories" name="categories" required multiple="true" cancelText="Cancel" okText="Add">
       <ion-option *ngFor="let item of interest" value={{item.$key}}>{{item.name}} </ion-option>
     </ion-select>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="categories.errors && (categories.dirty || categories.touched)">
+    <p [hidden]="!categories.errors.required">Phone number is required!</p>
   </ion-item>
 
   <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 

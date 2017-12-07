@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { Subscription } from 'rxjs/Subscription'
@@ -37,7 +37,8 @@ export class AddEventPage {
   subscription: Subscription;
   userID: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
+      public alertCtrl: AlertController) {
     this.subscription = this.firebase.getInterestList().subscribe(x => {
       this.interest = x;
     });
@@ -49,14 +50,29 @@ export class AddEventPage {
   }
 
   addEvent(event: UserEvent, categories) {
-    event.categories = categories
-    event.host = this.userID;
-    this.firebase.addEvent(event);
-    this.navCtrl.setRoot(UserEventsPage)
+    if(this.categories.length > 3){
+      this.navCtrl.setRoot(AddEventPage);
+      let alert = this.alertCtrl.create({
+      message: "Sorry, you can't select more than 3 categories",
+      buttons: [
+        {
+          text: "Ok",
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+    } else {
+      event.categories = categories;
+      event.host = this.userID;
+      this.firebase.addEvent(event);
+      this.navCtrl.setRoot(UserEventsPage);               
+    }
+    
   }
   
   cancel(){
-    this.navCtrl.setRoot(UserEventsPage)
+    this.navCtrl.setRoot(UserEventsPage);
   }
 
   ngOnDestroy() {
