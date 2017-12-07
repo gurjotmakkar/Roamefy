@@ -97,7 +97,7 @@
 
   <ion-item>
     <ion-label floating>End Date</ion-label>
-    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" min="2017-11-29" 
+    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" min="2017-12-07" 
     max="2019-12-31" required #endDate="ngModel" [class.invalid]="endDate.errors 
     && (endDate.dirty || endDate.touched)">
     </ion-datetime>
@@ -140,12 +140,15 @@
 
   <ion-item>
     <ion-label floating>Contact Phone</ion-label>
-    <ion-input [(ngModel)]="event.phone" name="phone" required #phone="ngModel" [class.invalid]="phone.errors 
+    <ion-input [(ngModel)]="event.phone" name="phone" required pattern="[^a-zA-Z!@#$%^\&*( )\t_-]*" minlength="10"
+      maxlength="10" #phone="ngModel" [class.invalid]="phone.errors 
     && (phone.dirty || phone.touched)"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="phone.errors && (phone.dirty || phone.touched)">
     <p [hidden]="!phone.errors.required">Phone number is required!</p>
+    <p [hidden]="!phone.errors.pattern">Phone number is not valid</p>
+    <p [hidden]="!phone.errors.minlength">Phone number is too short</p>
   </ion-item>
 
   <ion-item>
