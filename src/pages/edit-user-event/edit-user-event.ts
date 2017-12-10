@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { Subscription } from 'rxjs/Subscription'
@@ -18,7 +18,8 @@ export class EditUserEventPage {
   subscription2: Subscription;
   categories: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
+    public alertCtrl: AlertController) {
     this.eventKey = this.navParams.get('id');
     this.subscription = this.firebase.getSpecifiedEvent(this.eventKey).subscribe(x => {
       this.event = x;
@@ -41,9 +42,23 @@ export class EditUserEventPage {
   }
 
   updateEvent(event: UserEvent, categories) {
+    if(this.categories.length > 5){
+      //this.navCtrl.setRoot(EditUserEventPage);
+      let alert = this.alertCtrl.create({
+      message: "Sorry, you can't select more than 5 categories",
+      buttons: [
+        {
+          text: "Ok",
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+    } else {
     event.categories = categories;
     this.firebase.updateEvent(this.eventKey, event);
     this.navCtrl.setRoot(UserEventsPage)
+    }
   }
 
   removeEvent(event: UserEvent) {

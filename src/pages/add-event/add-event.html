@@ -11,9 +11,9 @@
 <ion-content padding>     
   <form #addEventForm="ngForm">
 
-    <ion-item class="form-group">
+    <ion-item>
       <ion-label floating>Event Name</ion-label>
-      <ion-input [(ngModel)]="event.name" type="text" name="name" required minlength="5"
+      <ion-input [(ngModel)]="event.name" type="text" name="name" required minlength="2"
       maxlength="64" pattern="[^0-9]*" #name="ngModel" [class.invalid]="name.errors 
       && (name.dirty || name.touched)"></ion-input>
     </ion-item>
@@ -22,20 +22,20 @@
         Event name is required!
       </p>
       <p [hidden]="!name.errors.minlength">
-          Event name must be at least 5 characters long.
+          Event name must be at least 2 characters long.
       </p>
       <p [hidden]="!name.errors.maxlength">
           Event name cannot be more than 64 characters long.
       </p>
       <p [hidden]="!name.errors.pattern">
         Only letters are allowed.
-    </p>
+      </p>
     </ion-item>
 
   <ion-item>
     <ion-label floating>Event Description</ion-label>
     <ion-input [(ngModel)]="event.description" type="text" name="description" required minlength="5" 
-    maxlength="5000" #description="ngModel" [class.invalid]="description.errors 
+    maxlength="5000" pattern="[^0-9]*" #description="ngModel" [class.invalid]="description.errors 
     && (description.dirty || description.touched)"></ion-input>
   </ion-item>
 
@@ -46,9 +46,11 @@
       <p [hidden]="!description.errors.minlength">
         Event description must be at least 5 characters long.
       </p>
-      
       <p [hidden]="!description.errors.maxlength">
         Event description cannot be more than 5000 characters long.
+      </p>
+      <p [hidden]="!description.errors.pattern">
+        Only letters are allowed.
       </p>
   </ion-item>
 

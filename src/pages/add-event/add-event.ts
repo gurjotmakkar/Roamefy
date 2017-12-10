@@ -50,10 +50,10 @@ export class AddEventPage {
   }
 
   addEvent(event: UserEvent, categories) {
-    if(this.categories.length > 3){
-      this.navCtrl.setRoot(AddEventPage);
+    if(this.categories.length > 5){
+      //this.navCtrl.setRoot(AddEventPage);
       let alert = this.alertCtrl.create({
-      message: "Sorry, you can't select more than 3 categories",
+      message: "Sorry, you can't select more than 5 categories",
       buttons: [
         {
           text: "Ok",
