@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { Subscription } from 'rxjs/Subscription'
 import { UserEventsPage } from '../user-events/user-events'
+import { AutocompletePage } from '../autocomplete/autocomplete';
+
 
 @IonicPage()
 @Component({
@@ -19,7 +21,7 @@ export class EditUserEventPage {
   categories: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController, private modalCtrl: ModalController) {
     this.eventKey = this.navParams.get('id');
     this.subscription = this.firebase.getSpecifiedEvent(this.eventKey).subscribe(x => {
       this.event = x;
@@ -59,6 +61,15 @@ export class EditUserEventPage {
     this.firebase.updateEvent(this.eventKey, event);
     this.navCtrl.setRoot(UserEventsPage)
     }
+  }
+
+  showAddressModal (){
+    let modal = this.modalCtrl.create(AutocompletePage);
+    //let me = this;
+    modal.onDidDismiss(data => {
+      this.event.address = data;
+    });
+    modal.present();
   }
 
   removeEvent(event: UserEvent) {
