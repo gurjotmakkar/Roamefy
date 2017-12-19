@@ -8,13 +8,14 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { InitialConfigurationPage } from '../pages/initial-configuration/initial-configuration';
 import { InitialConfigurationTwoPage } from '../pages/initial-configuration-two/initial-configuration-two';
-import { UserProfilePage } from '../pages/user-profile/user-profile'
-import { EditUserProfilePage } from '../pages/edit-user-profile/edit-user-profile'
-import { AddEventPage } from '../pages/add-event/add-event'
-import { EditUserEventPage } from '../pages/edit-user-event/edit-user-event'
+import { UserProfilePage } from '../pages/user-profile/user-profile';
+import { EditUserProfilePage } from '../pages/edit-user-profile/edit-user-profile';
+import { AddEventPage } from '../pages/add-event/add-event';
+import { EditUserEventPage } from '../pages/edit-user-event/edit-user-event';
 import { UserEventsPage } from '../pages/user-events/user-events';
-import { EventMapPage } from '../pages/event-map/event-map'
-import { EventListPage } from '../pages/event-list/event-list'
+import { EventMapPage } from '../pages/event-map/event-map';
+import { EventListPage } from '../pages/event-list/event-list';
+import { AutocompletePage } from '../pages/autocomplete/autocomplete';
 
 //UI
 import { StatusBar } from '@ionic-native/status-bar';
@@ -54,7 +55,8 @@ const firebaseConfig = {
     EditUserEventPage,
     UserEventsPage,
     EventMapPage,
-    EventListPage
+    EventListPage,
+    AutocompletePage
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ const firebaseConfig = {
     EditUserEventPage,
     UserEventsPage,
     EventMapPage,
-    EventListPage
+    EventListPage,
+    AutocompletePage
   ],
   providers: [
     StatusBar,
